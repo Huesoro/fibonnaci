@@ -26,15 +26,15 @@ def verificar_funcion(funcion, a, b, puntos=100, max_mostrar=5):
         x_vals = np.array(x_vals)
         y_vals = funcion(x_vals)
 
-        nan_mask = np.isnan(y_vals)
-        inf_mask = np.isinf(y_vals)
+        nans = np.isnan(y_vals)
+        inftys = np.isinf(y_vals)
 
-        problematic_x = x_vals[nan_mask | inf_mask]
-        n_problemas = len(problematic_x)
+        problematic_x = x_vals[nans | inftys]
+        no_def = len(problematic_x)
 
-        if n_problemas > 0:
-            st.error("La función presenta problemas de dominio en el intervalo.")
-            mostrar = min(n_problemas, max_mostrar)
+        if no_def > 0:
+            st.error("La función tiene problemas de dominio en el intervalo.")
+            mostrar = min(no_def, max_mostrar)
             for i in range(mostrar):
                 x = problematic_x[i]
                 try:
@@ -42,8 +42,8 @@ def verificar_funcion(funcion, a, b, puntos=100, max_mostrar=5):
                 except:
                     y = "Error"
                 st.write(f"f({x:.6f}) = {y}")
-            if n_problemas > max_mostrar:
-                st.write(f"... y {n_problemas - max_mostrar} valores problemáticos más.")
+            if no_def > max_mostrar:
+                st.write(f"... y {no_def - max_mostrar} valores problemáticos más.")
             return False
 
         return True
